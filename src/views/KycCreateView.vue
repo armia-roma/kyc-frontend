@@ -13,7 +13,12 @@ const fileRules = [
     return files?.length > 0 || 'File is required'
   },
 ]
+const valid = ref(false)
 const handleSubmit = async () => {
+  if (!valid.value) {
+    return
+  }
+
   const formData = new FormData()
   formData.append('full_name', fullName.value)
   formData.append('email', email.value)
@@ -38,7 +43,7 @@ const handleSubmit = async () => {
 <template>
   <v-container>
     <v-sheet class="ml-12" max-width="500">
-      <v-form @submit.prevent="handleSubmit">
+      <v-form @submit.prevent="handleSubmit" v-model="valid">
         <v-row>
           <v-col class="mb-5">
             <h4 class="text-h4">create Kyc</h4>
