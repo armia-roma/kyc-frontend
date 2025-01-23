@@ -1,10 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
+import KycCreateView from '@/views/KycCreateView.vue'
 import apiClient from '../../service/api-client'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [{ path: '/login', name: 'login', component: LoginView }],
+  routes: [
+    { path: '/login', name: 'login', component: LoginView },
+    { path: '/kyc-create', name: 'kycCreate', component: KycCreateView },
+  ],
 })
 router.beforeEach(async (to, from) => {
   const token = localStorage.getItem('token')
