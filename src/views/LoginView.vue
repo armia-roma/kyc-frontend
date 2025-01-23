@@ -7,6 +7,9 @@ import { login } from './../../service/authService'
 import router from '@/router'
 
 async function handleSubmit() {
+  if (!valid.value) {
+    return
+  }
   loading.value = true
   try {
     await login({ email: email.value, password: password.value }).then((user: any) => {
@@ -20,29 +23,16 @@ async function handleSubmit() {
     loading.value = false
   }
 }
-const nameRules = [
-  (value: string) => {
-    if (value) return true
 
-    return 'Name is required.'
-  },
-]
-const passwordRules = [
-  (value: string) => {
-    if (value) return true
-
-    return 'Name is required.'
-  },
-]
-const valid = false
+const valid = ref(false)
 </script>
 <template>
-  <v-container class="fill-height d-flex align-center justify-center">
+  <v-container class="fill-height">
     <v-row class="">
-      <v-col class="d-flex align-center">
-        <v-card class="pa-4 mx-auto" width="100%" max-width="500" title="Login" :loading="loading">
+      <v-col class="">
+        <v-card class="pa-8" width="100%" max-width="500" title="Login" :loading="loading">
           <v-form @submit.prevent="handleSubmit" v-model="valid">
-            <v-card>
+            <v-card variant="flat" class="pa-4">
               <v-row>
                 <v-col cols="12">
                   <v-text-field
@@ -50,7 +40,7 @@ const valid = false
                     label="Email"
                     hide-details="auto"
                     v-model="email"
-                    :rules="nameRules"
+                    :rules="[(v) => !!v || 'Email is required']"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -59,7 +49,7 @@ const valid = false
                   <v-text-field
                     label="Password"
                     variant="outlined"
-                    :rules="passwordRules"
+                    :rules="[(v) => !!v || 'Password is required']"
                     v-model="password"
                     type="password"
                   ></v-text-field>
