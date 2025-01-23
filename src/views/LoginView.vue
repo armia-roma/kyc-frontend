@@ -4,11 +4,16 @@ const email = ref('')
 const password = ref('')
 const loading = ref(false)
 import { login } from './../../service/authService'
+import router from '@/router'
 
 async function handleSubmit() {
   loading.value = true
   try {
-    await login({ email: email.value, password: password.value })
+    await login({ email: email.value, password: password.value }).then((user: any) => {
+      if (user && user.role === 'user') {
+        router.push({ name: 'kycCreate' })
+      }
+    })
   } catch (err) {
     loading.value = false
   } finally {
