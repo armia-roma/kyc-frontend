@@ -7,9 +7,17 @@
 			width="150"
 			permanent
 		>
-			<v-list-item link title="Create Kyc" to="/kyc-create"></v-list-item>
-			<v-list-item link title="List kyc" to="/kyc-list"></v-list-item>
-			<v-list-item link title="Admin" to="/report"></v-list-item>
+			<v-list-item
+				link
+				title="Create Kyc"
+				to="/admin/kyc-create"
+			></v-list-item>
+			<v-list-item
+				link
+				title="List kyc"
+				to="/admin/kyc-list"
+			></v-list-item>
+			<v-list-item link title="Admin" to="/admin/report"></v-list-item>
 		</v-navigation-drawer>
 		<v-main>
 			<RouterView />
