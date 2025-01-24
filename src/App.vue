@@ -4,12 +4,17 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <v-app>
-    <v-layout>
-      <v-main>
+    <v-layout class="fill-height">
+      <v-main style="min-height: 300px">
         <RouterView />
       </v-main>
     </v-layout>
   </v-app>
 </template>
 
-<style scoped></style>
+<style scoped>
+html,
+body {
+  height: 100%;
+}
+</style>
