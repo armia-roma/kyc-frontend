@@ -8,6 +8,7 @@ const router = createRouter({
   routes: [
     { path: '/login', name: 'login', component: LoginView },
     { path: '/kyc-create', name: 'kycCreate', component: KycCreateView },
+    { path: '/register', name: 'register', component: () => import('@/views/RegisterView.vue') },
   ],
 })
 router.beforeEach(async (to, from) => {
@@ -28,9 +29,7 @@ router.beforeEach(async (to, from) => {
   if (!isAuthenticated && to.name !== 'login') {
     return { name: 'login' }
   }
-  if (isAuthenticated && userRole === 'user' && to.name !== 'kycCreate') {
-    return { name: 'kycCreate' }
-  }
+  // s
 })
 
 export default router
