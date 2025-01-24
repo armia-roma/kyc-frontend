@@ -22,6 +22,11 @@ const router = createRouter({
         },
         { path: '/kyc-list', name: 'kycList', component: () => import('@/views/ListKycView.vue') },
         { path: '/report', name: 'report', component: () => import('@/views/ReportView.vue') },
+        {
+          path: 'kyc/:id',
+          name: 'kycDetails',
+          component: () => import('@/views/kycDetailsView.vue'),
+        },
       ],
     },
   ],
