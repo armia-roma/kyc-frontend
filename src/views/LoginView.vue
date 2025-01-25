@@ -1,48 +1,72 @@
 <script setup lang="ts">
+type Status = "error" | "success" | "info" | "warning" | undefined;
+
+import {login} from "./../../service/authService";
 import {ref} from "vue";
+import router from "@/router";
 const email = ref("");
 const password = ref("");
 const loading = ref(false);
-import {login} from "./../../service/authService";
-import router from "@/router";
+const valid = ref(false);
 
-async function handleSubmit() {
+const status = ref<Status>("error");
+const alertMessage = ref();
+const showAlert = ref(false);
+
+function handleSubmit() {
 	if (!valid.value) {
 		return;
 	}
 	loading.value = true;
-	try {
-		await login({email: email.value, password: password.value}).then(
-			(user: any) => {
-				if (user && user.role === "user") {
-					router.push({name: "kycCreate", query: {role: user.role}});
-				}
-				if (user && user.role === "admin") {
-					console.log(user);
-					router.push({name: "kycList", query: {role: user.role}});
-				}
-			}
-		);
-	} catch (err) {
-		loading.value = false;
-	} finally {
-		loading.value = false;
-	}
-}
 
-const valid = ref(false);
+	login({email: email.value, password: password.value})
+		.then((data: any) => {
+			showAlert.value = true;
+			status.value = "success";
+			alertMessage.value = data.message;
+			if (data.user && data.user.role === "user") {
+				console.log(data);
+				router.push({
+					name: "kycUserCreate",
+					query: {role: data.user.role},
+				});
+			}
+			if (data.user && data.user.role === "admin") {
+				router.push({name: "kycList", query: {role: data.user.role}});
+			}
+		})
+		.catch((err: any) => {
+			loading.value = false;
+			showAlert.value = true;
+			status.value = "error";
+			alertMessage.value = err.response.data.message || err;
+		})
+		.finally(() => {
+			loading.value = false;
+		});
+}
 const navigateToRegister = () => {
+	console.log("navigate to register");
 	router.push({name: "register"});
 };
 </script>
 <template>
-	<v-container class="fill-height">
-		<v-row class="">
-			<v-col class="">
+	<v-container class="mx-auto" fluid>
+		<v-row justify="center">
+			<v-col cols="12" md="6" align-self="center">
+				<v-alert
+					:type="status"
+					variant="tonal"
+					:text="alertMessage"
+					:model-value="showAlert"
+				></v-alert>
+			</v-col>
+		</v-row>
+		<v-row justify="center">
+			<v-col cols="12" md="6" align-self="center">
 				<v-card
 					class="pa-8"
 					width="100%"
-					max-width="500"
 					title="Login"
 					:loading="loading"
 				>
