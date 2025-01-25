@@ -16,7 +16,6 @@ const summary = ref<ReportSummary>({kyc_status: [], total_users: 0});
 
 onMounted(() => {
 	apiClient.get("/report").then((response) => {
-		console.log(response.data);
 		summary.value = response.data;
 	});
 });

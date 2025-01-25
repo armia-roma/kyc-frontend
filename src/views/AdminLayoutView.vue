@@ -1,6 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-	<v-container>
+	<v-container class="pa-0">
 		<v-navigation-drawer
 			color="grey-lighten-5"
 			class="text-grey-lighten-1"
@@ -19,7 +19,7 @@
 			></v-list-item>
 			<v-list-item link title="Admin" to="/admin/report"></v-list-item>
 		</v-navigation-drawer>
-		<v-main>
+		<v-main class="pa-4">
 			<RouterView />
 		</v-main>
 	</v-container>

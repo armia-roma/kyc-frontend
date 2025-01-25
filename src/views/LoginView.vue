@@ -25,7 +25,6 @@ function handleSubmit() {
 			status.value = "success";
 			alertMessage.value = data.message;
 			if (data.user && data.user.role === "user") {
-				console.log(data);
 				router.push({
 					name: "kycUserCreate",
 					query: {role: data.user.role},
@@ -46,7 +45,6 @@ function handleSubmit() {
 		});
 }
 const navigateToRegister = () => {
-	console.log("navigate to register");
 	router.push({name: "register"});
 };
 </script>
