@@ -55,5 +55,14 @@ const formatDate = (dateString: string) => {
 				formatDate(kycDetails?.createdAt)
 			}}</v-list-item-subtitle>
 		</v-list-item>
+		<v-list-item>
+			<template v-slot:prepend>
+				<v-icon icon="mdi-typewriter"></v-icon>
+			</template>
+			<v-list-item-title>Created By</v-list-item-title>
+			<v-list-item-subtitle>{{
+				kycDetails?.user.userName
+			}}</v-list-item-subtitle>
+		</v-list-item>
 	</v-list>
 </template>
