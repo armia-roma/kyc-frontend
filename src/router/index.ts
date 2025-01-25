@@ -4,43 +4,72 @@ import KycCreateView from "@/views/KycCreateView.vue";
 import apiClient from "../../service/api-client";
 import AdminLayoutView from "@/views/AdminLayoutView.vue";
 
+const getUserRole = () => localStorage.getItem("userRole");
+
+const isAuthenticated = () => !!localStorage.getItem("token");
+
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
-		{path: "/login", name: "login", component: LoginView},
-		{path: "/kyc-create", name: "kycUserCreate", component: KycCreateView},
+		{
+			path: "/login",
+			name: "login",
+			component: LoginView,
+			meta: {requiresAuth: false},
+		},
+		{
+			path: "/",
+			redirect: () => {
+				const role = getUserRole();
+				if (role === "admin") return "/admin";
+				if (role === "user") return "/kyc-create";
+				return "/login";
+			},
+		},
+		{
+			path: "/kyc-create",
+			name: "kycUserCreate",
+			component: KycCreateView,
+			meta: {
+				requiresAuth: true,
+			},
+		},
 		{
 			path: "/kyc/:id",
 			name: "kycUserDetails",
 			component: () => import("@/views/kycDetailsView.vue"),
+			meta: {
+				requiresAuth: true,
+			},
 		},
 		{
 			path: "/register",
 			name: "register",
 			component: () => import("@/views/RegisterView.vue"),
+			meta: {requireAuth: false},
 		},
 		{
 			path: "/admin",
 			component: AdminLayoutView,
-			meta: {requiresAuth: true, role: "admin"},
+			meta: {requiresAuth: true, roles: ["admin"]},
 			children: [
 				{
-					path: "/admin/kyc-create",
+					path: "kyc-create",
 					name: "kycCreate",
 					component: KycCreateView,
 				},
 				{
-					path: "/admin/kyc-list",
+					path: "kyc-list",
 					name: "kycList",
 					component: () => import("@/views/ListKycView.vue"),
 				},
 				{
-					path: "/admin/report",
+					path: "report",
 					name: "report",
 					component: () => import("@/views/ReportView.vue"),
 				},
 				{
-					path: "admin/kyc/:id",
+					path: "kyc/:id",
 					name: "kycDetails",
 					component: () => import("@/views/kycDetailsView.vue"),
 				},
@@ -48,27 +77,22 @@ const router = createRouter({
 		},
 	],
 });
-router.beforeEach(async (to, from) => {
-	const token = localStorage.getItem("token");
-	let isAuthenticated = false;
-	let userRole = null;
-
-	if (token) {
-		try {
-			const userData = await apiClient.post("/user/verify-token", {
-				token,
-			});
-			isAuthenticated = true;
-			userRole = userData.data.data.role;
-		} catch (error) {
-			localStorage.removeItem("token");
+router.beforeEach((to, from, next) => {
+	if (to.meta.requiresAuth) {
+		if (isAuthenticated()) {
+			if (
+				to.meta.roles &&
+				Array.isArray(to.meta.roles) &&
+				!to.meta.roles.includes(getUserRole())
+			) {
+				return next({name: "login"});
+			}
+			return next();
+		} else {
+			return next({name: "login"});
 		}
 	}
-
-	if (!isAuthenticated && to.name !== "login") {
-		return {name: "login"};
-	}
-	// s
+	next();
 });
 
 export default router;
