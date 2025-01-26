@@ -1,20 +1,47 @@
 # kyc
 
-This template should help get you started developing with Vue 3 in Vite.
+This project is the frontend for a simplified KYC (Know Your Customer) system, built with Vue 3, Vite, and Vuetify. It allows users to register, submit KYC details, and view their status, while admins can manage KYC submissions and view a dashboard of key metrics.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- User authentication and role-based access (Admin/User).
+- KYC submission form with file upload.
+- Admin dashboard for managing user submissions and status updates.
+- Key Performance Indicators (KPIs) displayed on the dashboard ( total users, pending/ approved/rejected submissions).
 
-## Type Support for `.vue` Imports in TS
+## Assumptions
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+### 1. State Management:
 
-## Customize configuration
+- Assumption: The application uses local component state.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Reason: Since the project is small, global state management tools like Vuex are not required. If the application grows, Vuex could be integrated for scalability.
+
+### 2. KYC Submission Status
+
+- Assumption: Submission statuses (Pending, Approved, Rejected) are hardcoded on the frontend.
+
+- Reason: simplifies testing, In the future, it can dynamically fetch the statuses from the backend.
+
+### 3. Route guards
+
+- Assumption : Route guards are implemented to restrict access to authenticated and authorized users.
+
+- Reason: To ensure secure navigation and role-based access to pages like the admin dashboard.
 
 ## Project Setup
+
+### Clone the repository
+
+```sh
+git clone https://github.com/armia-roma/kyc-frontend.git
+```
+
+```sh
+cd kyc-frontend
+```
+
+### Install Dependencies
 
 ```sh
 npm install
