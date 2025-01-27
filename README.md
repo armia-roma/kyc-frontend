@@ -29,6 +29,10 @@ This project is the frontend for a simplified KYC (Know Your Customer) system, b
 
 - Reason: To ensure secure navigation and role-based access to pages like the admin dashboard.
 
+## Trade off
+- implemented a data table without pagination for simplicity in the current application.
+-  future support scalability by adding pagination and search query functionality as the app grows and data volume increases.
+  
 ## Project Setup
 
 ### Clone the repository
